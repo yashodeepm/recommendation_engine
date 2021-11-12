@@ -187,14 +187,16 @@ async def getRecommendations(*, username: str, key: str, recommendationRequest: 
     if RECOMMENDED in user_data.keys():
         unique_recommendations = []
         for recommendation in recommendationsReceived:
-            if recommendation not in user_data[RECOMMENDED]:
+            if recommendation not in user_data[RECOMMENDED] and len(recommendation) != 0 :
                 unique_recommendations.append(recommendation)
         if len(unique_recommendations) == 0:
             #TODO: Consider case when the random_selection is again a duplicate
             for place in places:
                 rand_selection = random.randint(0, len(place) - 1)
                 if len(place) > 0:
-                    unique_recommendations.append(convertToDBModel(recommendationRequest.location, place[rand_selection]))
+                    temp = convertToDBModel(recommendationRequest.location, place[rand_selection])
+                    if len(temp) != 0:
+                        unique_recommendations.append(temp)
         user_data[RECOMMENDED].extend(unique_recommendations)
         recommendationsReceived = unique_recommendations
     else:
@@ -216,11 +218,10 @@ async def addRecommendation(*, username: str, key: str, recommendationAcceptRequ
     if RECOMMENDED not in user_data.keys():
         return Response(content = json.dumps({ "errorList": [ "Requested place_id not found attached to user" ]}), media_type = "application/json")
 
-    for i in range(len(user_data['recommended'])):
-        if recommendationAcceptRequest.place_id == user_data['recommended'][i]['place_id']:
+    for i in range(len(user_data[RECOMMENDED])):
+        if recommendationAcceptRequest.place_id == user_data[RECOMMENDED][i]['place_id']:
             found = True
             index = i
-    
     if not found:
         return Response(content = json.dumps({ "errorList": [ "Requested place_id not found attached to user" ]}), media_type = "application/json")
 
