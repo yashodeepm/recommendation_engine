@@ -3,7 +3,6 @@ import math
 import random
 from typing import List, Dict
 import copy
-from fastapi.params import Query
 
 import database
 from fastapi import FastAPI, Response
