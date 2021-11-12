@@ -1,0 +1,5 @@
+aiohttp==3.8.0
+fastapi==0.70.0
+motor==2.5.1
+pydantic==1.8.2
+requests==2.24.0
