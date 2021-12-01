@@ -153,6 +153,25 @@ def validateAPIKey(key: str):
 async def root():
     return {"message": "You have reached the backend of recommendation algo created as part of Gatech RTES 6235/4220"}
 
+@app.get("/loaderio-11070bd11acaa4a6e6e643ddff18aff7.txt")
+async def stress_test():
+    return Response(content = open('loaderio-11070bd11acaa4a6e6e643ddff18aff7.txt', mode = 'r').read(), media_type = "text/plain")
+
+@app.get("/initUser/{username}", status_code = 200)
+async def initUser(*, username: str, key: str):
+    res = validateAPIKey(key)
+    if res != None:
+        return res
+    # Check if user already exists
+    user_data = await db.find_one({"username": username})
+    if user_data == None:
+        print("User not found. Adding user....")
+        new_user_data = {"username": username, "event_history": [], "recommended": []}
+        await db.insert_one(new_user_data)
+        return Response(content = json.dumps("Success"), media_type = "text/plain")
+    else:
+        return Response(content = json.dumps("Failure: User already exists"), media_type = "text/plain")
+
 @app.post("/getRecommendations/{username}", status_code = 200)
 async def getRecommendations(*, username: str, key: str, recommendationRequest: RecommendationRequest):
     # Get first 10 results (by prominence) of each type. Use aynscio here to make multiple requests to the API to improve latency.
