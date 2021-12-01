@@ -21,6 +21,8 @@ Postman example:
 ```
 GET http://recoserver.me/initUser/{username}?key=<API_KEY>
 ```
+
+```
 POST http://recoserver.me/getRecommendations/vneal?key=<API_KEY>
 Body (application/json):
 {
