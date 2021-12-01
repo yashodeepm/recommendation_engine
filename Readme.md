@@ -1,7 +1,7 @@
 ##Steps
 - Server is currently running at: recoserver.me/
 - 3 APIs provided: 
-- - `/initUser/{username}?key=<API_KEY>: add a user to start tracking event_history. To be used for first time users.
+- - `/initUser/{username}?key=<API_KEY>`: add a user to start tracking event_history. To be used for first time users.
 - - `/addRecommendation/{username}?key=<API_KEY>, Body: {"places_id": "xxxxx"}`: shifts a place from recommended to user state to event_history which would be used for recommendation evaluation from next step
 - - `/getRecommendations/{username}?key=<API_KEY>, Body: See openapi spec`.
 Eg: 
